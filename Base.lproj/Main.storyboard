@@ -163,11 +163,12 @@
                     <connections>
                         <outlet property="emailSignInText" destination="5pJ-yC-jue" id="Wgz-6J-IXe"/>
                         <outlet property="passwordSignInText" destination="CXD-hH-XmZ" id="42t-GW-bfE"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="GoToLogin" id="xUf-vZ-5O1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z3o-wb-H8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="914" y="37"/>
+            <point key="canvasLocation" x="1422" y="-94"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="xYK-D1-Y5B">
