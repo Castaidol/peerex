@@ -80,6 +80,15 @@
                                     <segue destination="gaz-Xi-d3A" kind="show" id="upy-94-3Yi"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JNj-Ox-e2j">
+                                <rect key="frame" x="204" y="506" width="135" height="112"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Go To Map"/>
+                                <connections>
+                                    <segue destination="Xg7-TP-LWf" kind="show" id="hvk-lr-V12"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -114,7 +123,7 @@
                                         <rect key="frame" x="8" y="10" width="60" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5pJ-yC-jue">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5pJ-yC-jue">
                                         <rect key="frame" x="76" y="40" width="259" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
@@ -132,7 +141,7 @@
                                         <rect key="frame" x="8" y="10" width="60" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CXD-hH-XmZ">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CXD-hH-XmZ">
                                         <rect key="frame" x="76" y="40" width="259" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
@@ -150,19 +159,38 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IiQ-RQ-wGo">
-                                <rect key="frame" x="88" y="422" width="216" height="59"/>
+                                <rect key="frame" x="79" y="537" width="216" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Sign In"/>
                                 <connections>
                                     <action selector="singInAction:" destination="gaz-Xi-d3A" eventType="touchUpInside" id="N6I-WW-YL8"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0nn-7v-OWy">
+                                <rect key="frame" x="16" y="401" width="343" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="key" translatesAutoresizingMaskIntoConstraints="NO" id="UIr-Ea-VuU">
+                                        <rect key="frame" x="8" y="10" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Re-type password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8jC-pg-ivm">
+                                        <rect key="frame" x="76" y="40" width="259" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.40863569630000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
                         <outlet property="emailSignInText" destination="5pJ-yC-jue" id="Wgz-6J-IXe"/>
                         <outlet property="passwordSignInText" destination="CXD-hH-XmZ" id="42t-GW-bfE"/>
+                        <outlet property="reTypePassword" destination="8jC-pg-ivm" id="miu-XK-q5f"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="GoToLogin" id="xUf-vZ-5O1"/>
                     </connections>
                 </viewController>
@@ -186,7 +214,39 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gNr-ib-aF4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="913" y="-744"/>
+            <point key="canvasLocation" x="837.60000000000002" y="-1154.5727136431785"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="NHe-QQ-mWF">
+            <objects>
+                <viewController id="Xg7-TP-LWf" customClass="MapViewController" customModule="Peerex" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gFT-6P-RWo"/>
+                        <viewControllerLayoutGuide type="bottom" id="WIO-1D-x9c"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="liT-Vn-A1h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iso-Bz-DeM">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iso-Bz-DeM" firstAttribute="top" secondItem="liT-Vn-A1h" secondAttribute="top" id="9aM-0c-rcU"/>
+                            <constraint firstItem="iso-Bz-DeM" firstAttribute="leading" secondItem="liT-Vn-A1h" secondAttribute="leading" id="JrQ-Rs-J34"/>
+                            <constraint firstAttribute="trailing" secondItem="iso-Bz-DeM" secondAttribute="trailing" id="Ttb-tG-kaE"/>
+                            <constraint firstItem="WIO-1D-x9c" firstAttribute="top" secondItem="iso-Bz-DeM" secondAttribute="bottom" id="sai-0e-nV6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="map" destination="iso-Bz-DeM" id="bjn-k3-rGp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y6K-P4-CN0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2024.8" y="-1155.472263868066"/>
         </scene>
     </scenes>
     <resources>
