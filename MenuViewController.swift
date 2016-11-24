@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MenuViewController: UIViewController {
 
@@ -21,6 +22,14 @@ class MenuViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func logOutBtn(_ sender: Any) {
+        
+        try! FIRAuth.auth()!.signOut()
+        
+        self.presentingViewController!.dismiss(animated: true, completion: nil)
+        
+        //self.navigationController?.popToRootViewController(animated: true)
+    }
 
     /*
     // MARK: - Navigation

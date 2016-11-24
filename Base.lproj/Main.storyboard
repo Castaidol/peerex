@@ -10,42 +10,6 @@
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="zLk-n6-XFe">
-            <objects>
-                <viewController id="Pge-Jy-QjA" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nuj-GT-qM4"/>
-                        <viewControllerLayoutGuide type="bottom" id="fJe-GU-u8X"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="LeC-h2-fTB">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQk-MF-iNr">
-                                <rect key="frame" x="0.0" y="80" width="1125" height="456"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="59J-ZY-O5b">
-                                        <rect key="frame" x="164" y="245" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mp9-Nx-cgG">
-                                        <rect key="frame" x="246" y="209" width="46" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LHb-an-oCr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1831.2" y="37.331334332833585"/>
-        </scene>
-        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Peerex" customModuleProvider="target" sceneMemberID="viewController">
@@ -229,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z3o-wb-H8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1422" y="-94"/>
+            <point key="canvasLocation" x="1351" y="37"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="xYK-D1-Y5B">
@@ -253,10 +217,10 @@
             </objects>
             <point key="canvasLocation" x="772" y="-1135"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu View Controller-->
         <scene sceneID="Bvi-Go-oPA">
             <objects>
-                <viewController id="j5f-oK-O3X" sceneMemberID="viewController">
+                <viewController id="j5f-oK-O3X" customClass="MenuViewController" customModule="Peerex" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yar-vF-cjP"/>
                         <viewControllerLayoutGuide type="bottom" id="V9Z-dz-dQf"/>
@@ -279,6 +243,14 @@
                                 <state key="normal" title="MyTrans"/>
                                 <connections>
                                     <segue destination="HYY-d8-Dah" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSeguePushController" id="dvy-Nl-SBU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biG-EK-P4k">
+                                <rect key="frame" x="16" y="575" width="108" height="72"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Log Out"/>
+                                <connections>
+                                    <action selector="logOutBtn:" destination="j5f-oK-O3X" eventType="touchUpInside" id="ma7-C5-3Qb"/>
                                 </connections>
                             </button>
                         </subviews>
