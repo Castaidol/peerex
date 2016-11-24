@@ -16,8 +16,8 @@ class MyTransactionTableViewController: UITableViewController {
         
         if revealViewController() != nil{
             
-//            menuButton.target = revealViewController()
-//            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            menuButton.target = revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
@@ -32,13 +32,6 @@ class MyTransactionTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    @IBAction func testMenuButton() {
-        
-        print("menu button tapped")
-        revealViewController().revealToggle(nil)
-        
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -121,9 +121,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <state key="normal" title="Go To Map"/>
-                                <connections>
-                                    <segue destination="Xg7-TP-LWf" kind="show" id="hvk-lr-V12"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -317,13 +314,12 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Root View Controller" id="pAu-h7-5dh">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="nCP-XM-EJO">
-                            <connections>
-                                <action selector="testMenuButton" destination="RpE-bR-bIy" id="jL9-I2-hrb"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="nCP-XM-EJO"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="menuButton" destination="nCP-XM-EJO" id="3Zo-SU-Rcm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6B0-EI-5In" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -357,7 +353,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="C6N-hD-g3l">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6N-hD-g3l">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
@@ -365,12 +361,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="c4J-1t-Vj1">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="sFh-FB-EJW">
-                            <connections>
-                                <action selector="testMenuButton" destination="N4i-IZ-fIT" id="5Fd-fJ-0Au"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="sFh-FB-EJW"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="map" destination="C6N-hD-g3l" id="0cS-Sc-0gW"/>
+                        <outlet property="menuButton" destination="sFh-FB-EJW" id="pvi-9S-xdq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ah6-Nz-9FK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -391,38 +387,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSX-j6-VdB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2873" y="-1941"/>
-        </scene>
-        <!--Map View Controller-->
-        <scene sceneID="NHe-QQ-mWF">
-            <objects>
-                <viewController id="Xg7-TP-LWf" customClass="MapViewController" customModule="Peerex" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="gFT-6P-RWo"/>
-                        <viewControllerLayoutGuide type="bottom" id="WIO-1D-x9c"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="liT-Vn-A1h">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iso-Bz-DeM">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </mapView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="iso-Bz-DeM" firstAttribute="top" secondItem="liT-Vn-A1h" secondAttribute="top" id="9aM-0c-rcU"/>
-                            <constraint firstItem="iso-Bz-DeM" firstAttribute="leading" secondItem="liT-Vn-A1h" secondAttribute="leading" id="JrQ-Rs-J34"/>
-                            <constraint firstAttribute="trailing" secondItem="iso-Bz-DeM" secondAttribute="trailing" id="Ttb-tG-kaE"/>
-                            <constraint firstItem="WIO-1D-x9c" firstAttribute="top" secondItem="iso-Bz-DeM" secondAttribute="bottom" id="sai-0e-nV6"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="map" destination="iso-Bz-DeM" id="bjn-k3-rGp"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="y6K-P4-CN0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="62" y="869"/>
         </scene>
     </scenes>
     <resources>

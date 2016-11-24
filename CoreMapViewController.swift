@@ -7,20 +7,30 @@
 //
 
 import UIKit
+import CoreLocation
+import MapKit
 
-class CoreMapViewController: UIViewController {
+class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
 
         // Do any additional setup after loading the view.
         
         if revealViewController() != nil{
             
-//            menuButton.target = revealViewController()
-//            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            menuButton.target = revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
@@ -29,12 +39,6 @@ class CoreMapViewController: UIViewController {
         
     }
     
-    @IBAction func testMenuButton() {
-        
-        print("menu button tapped")
-        revealViewController().revealToggle(nil)
-        
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -42,14 +46,26 @@ class CoreMapViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let userLocation: CLLocation = locations[0]
+        
+        let latitude = userLocation.coordinate.latitude
+        
+        let longitude = userLocation.coordinate.longitude
+        
+        let latDelta: CLLocationDegrees = 0.05
+        
+        let lonDelta: CLLocationDegrees = 0.05
+        
+        let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
+        
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        let region = MKCoordinateRegion(center: location, span: span)
+        
+        self.map.setRegion(region, animated: true)
+        
     }
-    */
 
 }
