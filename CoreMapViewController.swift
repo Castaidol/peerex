@@ -54,9 +54,9 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         let longitude = userLocation.coordinate.longitude
         
-        let latDelta: CLLocationDegrees = 0.05
+        let latDelta: CLLocationDegrees = 0.01
         
-        let lonDelta: CLLocationDegrees = 0.05
+        let lonDelta: CLLocationDegrees = 0.01
         
         let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
         
