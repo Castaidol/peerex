@@ -14,6 +14,7 @@ class EditAccountViewController: UIViewController {
     
     
 
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var firstNameText: UITextField!
     @IBOutlet weak var lastNameText: UITextField!
@@ -21,7 +22,15 @@ class EditAccountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        if revealViewController() != nil{
+            
+            menuButton.target = revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
