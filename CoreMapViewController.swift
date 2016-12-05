@@ -23,7 +23,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
 
     
     var merchants: [Merchant] = []
-    var idx: Int? = nil
+    var idx: Int? = 0
     
     var amountSGD = 20
     
@@ -32,6 +32,8 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         super.viewDidLoad()
         
         collectionMerch.isHidden = false
+        collectionMerch.delegate = self
+        collectionMerch.allowsSelection = true;
         
         let pinchGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
         pinchGesture.minimumPressDuration = 2
@@ -46,7 +48,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         locationManager.startUpdatingLocation()
         
 
-        
+
         if revealViewController() != nil{
             
             menuButton.target = revealViewController()
@@ -191,9 +193,11 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         idx = indexPath.row
+        print("valud of idx at idxpath is \(idx)")
+        performSegue(withIdentifier: "showDetail", sender: nil)
         
     }
     
@@ -201,7 +205,9 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         let destViewController : DetailTransactionViewController = segue.destination as! DetailTransactionViewController
         
-        destViewController.transData = [self.merchants[idx!]]
+        let my_merchant = self.merchants[idx!]
+        print("valud of idx is \(idx)")
+        destViewController.transData = my_merchant
         
     }
 

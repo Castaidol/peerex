@@ -21,6 +21,5 @@ class MerchantMapCollectionViewCell: UICollectionViewCell {
         self.merchRatingLabel.text = merchant.rating
         self.merchDistanceLabel.text = "x m"
         self.merchImage.image = UIImage(named: merchant.image)
-        
     }
 }

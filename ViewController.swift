@@ -14,10 +14,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var emailLogInText: UITextField!
     @IBOutlet weak var passwordLogInText: UITextField!
     @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        styleView()
         
     }
     
@@ -60,7 +62,17 @@ class ViewController: UIViewController {
         
     }
 
-    
+    func styleView(){
+        
+        passwordLogInText.borderStyle = UITextBorderStyle.none
+        emailLogInText.borderStyle = UITextBorderStyle.none
+        signUpButton.layer.borderWidth = 1
+        signUpButton.layer.borderColor = UIColor.black.cgColor
+        signUpButton.layer.cornerRadius = 5
+        logInButton.layer.cornerRadius = 5
+
+        
+    }
     
     
     

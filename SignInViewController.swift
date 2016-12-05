@@ -14,6 +14,8 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var emailSignInText: UITextField!
     @IBOutlet weak var passwordSignInText: UITextField!
     @IBOutlet weak var reTypePassword: UITextField!
+    @IBOutlet weak var singUpButton: UIButton!
+    @IBOutlet weak var logInButton: UIButton!
     
     var validEmail = false
     var validPassword = false
@@ -22,7 +24,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        styleView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -148,6 +150,17 @@ class SignInViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func styleView(){
+        
+        logInButton.layer.borderColor = UIColor.black.cgColor
+        logInButton.layer.borderWidth = 1
+        logInButton.layer.cornerRadius = 5
+        singUpButton.layer.cornerRadius = 5
+        emailSignInText.borderStyle = UITextBorderStyle.none
+        passwordSignInText.borderStyle = UITextBorderStyle.none
+        reTypePassword.borderStyle = UITextBorderStyle.none
     }
 }
 

@@ -19,13 +19,13 @@ class DetailTransactionViewController: UIViewController {
     @IBOutlet weak var creditCardLabel: UILabel!
     @IBOutlet weak var merchLocationLabel: UILabel!
     
-    var transData : [Merchant] = []
+    var transData: Merchant!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        merchNameLabel.text = ""
+        merchNameLabel.text = transData.name
         
 
         
