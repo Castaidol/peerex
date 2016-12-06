@@ -14,13 +14,15 @@ class Traveler{
     var lastName: String
     var creditCard: CreditCard
     var photo: String
+    var mobileNumber: String
     
-    init(firstName: String, lastName: String, creditCard: CreditCard, photo: String){
+    init(firstName: String, lastName: String, creditCard: CreditCard, photo: String, mobileNumber: String){
         
         self.firstName = firstName
         self.lastName = lastName
         self.creditCard = creditCard
         self.photo = photo
+        self.mobileNumber = mobileNumber
         
     }
 }

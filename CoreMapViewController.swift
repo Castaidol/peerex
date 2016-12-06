@@ -16,6 +16,12 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    @IBOutlet weak var amounMoney: UILabel!
+    @IBOutlet weak var moneyView: UIView!
+    
+    @IBOutlet weak var streetTextField: UITextField!
+    @IBOutlet weak var streetView: UIView!
+    
     let reuseIdentifier = "Cell"
     
     var locationManager = CLLocationManager()
@@ -31,9 +37,8 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionMerch.isHidden = false
-        collectionMerch.delegate = self
-        collectionMerch.allowsSelection = true;
+        styleView()
+        
         
         let pinchGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
         pinchGesture.minimumPressDuration = 2
@@ -95,7 +100,6 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
             let region = MKCoordinateRegion(center: userLocation, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
             
             self.map.setRegion(region, animated: true)
-            
             
         }
         
@@ -197,7 +201,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         idx = indexPath.row
         print("valud of idx at idxpath is \(idx)")
-        performSegue(withIdentifier: "showDetail", sender: nil)
+        //performSegue(withIdentifier: "showDetail", sender: nil)
         
     }
     
@@ -208,6 +212,54 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         let my_merchant = self.merchants[idx!]
         print("valud of idx is \(idx)")
         destViewController.transData = my_merchant
+        
+    }
+    
+    @IBAction func plusButton(_ sender: Any) {
+        
+        if amountSGD < 100 {
+            
+            amountSGD += 10
+            
+            amounMoney.text = "$\(amountSGD)"
+        }
+        
+    }
+    
+    @IBAction func minusButton(_ sender: Any){
+        
+        if amountSGD > 10 {
+            
+            amountSGD -= 10
+            
+            amounMoney.text = "$\(amountSGD)"
+        }
+        
+    }
+    
+    @IBAction func cancelStreetButton(_ sender: Any){
+        
+        streetTextField.text = ""
+        
+    }
+    
+    func styleView(){
+        
+        amounMoney.text = "$\(amountSGD)"
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        
+        collectionMerch.isHidden = false
+        collectionMerch.delegate = self
+        collectionMerch.allowsSelection = true
+
+        
+        streetTextField.borderStyle = UITextBorderStyle.none
+        moneyView.layer.cornerRadius = 5
+        streetView.layer.cornerRadius = 5
+        
         
     }
 
