@@ -78,12 +78,17 @@ class WalkThroughViewController: UIViewController, UICollectionViewDataSource, U
     
     func styleView(){
         
+        let minimumSpace = walkThroughCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        minimumSpace.minimumLineSpacing = 0
+        
         logInButton.layer.cornerRadius = 5
         singUpButton.layer.borderWidth = 1
         singUpButton.layer.borderColor = UIColor.black.cgColor
         singUpButton.layer.cornerRadius = 5
         
     }
+    
+    
     
 
     

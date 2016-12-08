@@ -18,6 +18,10 @@ class MyTransactionTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        
         transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "22/11/2016", time: "10:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
         transactions.append(Transaction(transactionID: "trans1", value: "25.00", date: "26/11/2016", time: "13:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
         transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "24/11/2016", time: "9:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))

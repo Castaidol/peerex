@@ -8,13 +8,32 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class MenuViewController: UIViewController {
+    
+    @IBOutlet weak var profilePic: UIButton!
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    var ref: FIRDatabaseReference!
+    let userId: String = FIRAuth.auth()!.currentUser!.uid
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        ref = FIRDatabase.database().reference()
+        
+        ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let firstName = value?["firstName"] as? String ?? ""
+            self.nameLabel.text = firstName
+        })
+        
+        profilePic.layer.cornerRadius = 45
+        profilePic.layer.borderWidth = 5
+        profilePic.layer.borderColor = UIColor.init(red: 88, green: 193, blue: 153, alpha: 1).cgColor
+
     }
 
     override func didReceiveMemoryWarning() {
