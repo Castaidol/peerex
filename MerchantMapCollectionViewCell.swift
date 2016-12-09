@@ -20,6 +20,9 @@ class MerchantMapCollectionViewCell: UICollectionViewCell {
         self.merchNameLabel.text = merchant.name
         self.merchRatingLabel.text = merchant.rating
         self.merchDistanceLabel.text = "x m"
-        self.merchImage.image = UIImage(named: merchant.image)
+        if let image = merchant.image {
+            self.merchImage.image = UIImage(named: image)
+        }
+        
     }
 }

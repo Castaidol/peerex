@@ -11,6 +11,7 @@ import CoreLocation
 import MapKit
 import FirebaseAuth
 import FirebaseDatabase
+import Alamofire
 
 class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -70,6 +71,41 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
             
         }
+        
+        Alamofire.request("https://boiling-castle-76624.herokuapp.com/merchants", method: .get).responseJSON { (response) in
+            
+            if let JSON = response.result.value {
+//                print("JSON: \(JSON)")
+                
+                let arrayOfMerchants = JSON as! [[String: Any]]
+                
+                for merchant in arrayOfMerchants {
+                    
+                    //print(merchant)
+                    
+                    let merchantName = merchant["merchant_name"] as! String
+                    let merchantStatus = merchant["merchant_status"] as! Bool
+                    
+                    var merchantImage: String?
+                    if merchant["merchant_avatar"] != nil {
+                        merchantImage = merchant["merchant_avatar"] as? String
+                    }
+                    
+                    let merchantRating = merchant["merchant_rating"] as! Float
+                    let merchantRatingStr = "\(merchantRating)"
+                    
+                    let merchantLat = merchant["lat"] as! String
+                    let merchantLatNumber = Double(merchantLat)
+                    let merchantLong = merchant["long"] as! String
+                    let merchantLongNumber = Double(merchantLong)
+                    
+                    self.merchants.append(Merchant(name: merchantName, location: CLLocationCoordinate2DMake(merchantLatNumber!, merchantLongNumber!), status: merchantStatus, rating: merchantRatingStr, image: merchantImage))
+                    
+                }
+            }
+            
+            print (self.merchants)
+        }
 //        
 //        ref = FIRDatabase.database().reference()
 //        let merchantRef = ref.child("Merchant")
@@ -81,7 +117,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
 //            
 //            
 //        })
-//        
+//
 //        refHandle = ref.observe(FIRDataEventType.value, with: { (snapshot) in
 //            
 //            
