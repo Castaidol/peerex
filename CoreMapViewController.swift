@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 import MapKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -32,6 +34,11 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     var idx: Int? = 0
     
     var amountSGD = 20
+    
+    var ref: FIRDatabaseReference!
+    let userId: String = FIRAuth.auth()!.currentUser!.uid
+    var refHandle: UInt!
+    let user = FIRAuth.auth()?.currentUser
     
     
     override func viewDidLoad() {
@@ -63,14 +70,45 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
             
         }
-        
-        
-        merchants.append(Merchant(name: "Merch 1", location: CLLocationCoordinate2DMake(1.2768626, 103.8431314), status: true, rating: "4.0", image: "hostel1"))
-        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
-        merchants.append(Merchant(name: "Merch 3", location:CLLocationCoordinate2DMake(1.278796, 103.841442), status: false, rating: "1.3", image: "hostel3"))
-        merchants.append(Merchant(name: "Merch 4", location:CLLocationCoordinate2DMake(1.276569, 103.842083), status: true, rating: "4.2", image: "hostel4"))
+//        
+//        ref = FIRDatabase.database().reference()
+//        let merchantRef = ref.child("Merchant")
+//        
+//        merchantRef.observe(.childAdded, with: { (snapshot) in
+//        
+//            print(snapshot.value!)
+//            
+//            
+//            
+//        })
+//        
+//        refHandle = ref.observe(FIRDataEventType.value, with: { (snapshot) in
+//            
+//            
+//        })
+//
+//        ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let value = snapshot.value as? NSDictionary
+//            let firstName = value?["firstName"] as? String ?? ""
+//            let lastName = value?["lastName"] as? String ?? ""
+//            let phoneNumber = value?["phoneNumber"] as? String ?? ""
+//            self.firstNameText.text = firstName
+//            self.lastNameText.text = lastName
+//            self.phoneNumber.text = phoneNumber
+//            
+//        })
 
-        reloadMap()
+        
+        
+//        merchants.append(Merchant(name: "Merch 1", location: CLLocationCoordinate2DMake(1.2768626, 103.8431314), status: true, rating: "4.0", image: "hostel1"))
+//        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
+//        merchants.append(Merchant(name: "Merch 3", location:CLLocationCoordinate2DMake(1.278796, 103.841442), status: false, rating: "1.3", image: "hostel3"))
+//        merchants.append(Merchant(name: "Merch 4", location:CLLocationCoordinate2DMake(1.276569, 103.842083), status: true, rating: "4.2", image: "hostel4"))
+        
+        
+
+//        reloadMap()
         
     }
     
@@ -117,7 +155,6 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
             annotation.coordinate = merch.location
             annotation.title = merch.name
             annotation.subtitle = "\(x)"
-//            annotation.subtitle = merch.rating
         
             map.addAnnotation(annotation)
             
@@ -201,7 +238,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         idx = indexPath.row
         print("valud of idx at idxpath is \(idx)")
-        //performSegue(withIdentifier: "showDetail", sender: nil)
+
         
     }
     
@@ -263,5 +300,4 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
     }
 
-    
 }

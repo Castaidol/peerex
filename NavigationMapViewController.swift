@@ -70,15 +70,12 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         
         let destinationLocation = merchants[0].location
         
-        // 3.
         let sourcePlacemark = MKPlacemark(coordinate: userLocation, addressDictionary: nil)
         let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
         
-        // 4.
         let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
         let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
         
-        // 5.
         let sourceAnnotation = MKPointAnnotation()
         sourceAnnotation.title = "My position"
         
@@ -94,19 +91,15 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             destinationAnnotation.coordinate = location.coordinate
         }
         
-        // 6.
         self.map.showAnnotations([sourceAnnotation,destinationAnnotation], animated: true )
         
-        // 7.
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
         directionRequest.transportType = .walking
         
-        // Calculate the direction
         let directions = MKDirections(request: directionRequest)
         
-        // 8.
         directions.calculate {
             (response, error) -> Void in
             
