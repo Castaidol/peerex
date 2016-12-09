@@ -20,6 +20,7 @@ class EditAccountViewController: UIViewController {
     @IBOutlet weak var lastNameText: UITextField!
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var emailText: UITextField!
+    @IBOutlet weak var saveButton: UIButton!
     
     
     var ref: FIRDatabaseReference!
@@ -59,13 +60,6 @@ class EditAccountViewController: UIViewController {
         let email = user?.email
         self.emailText.text = email
         
-        firstNameText.borderStyle = UITextBorderStyle.none
-        lastNameText.borderStyle = UITextBorderStyle.none
-        phoneNumber.borderStyle = UITextBorderStyle.none
-        emailText.borderStyle = UITextBorderStyle.none
-
-        
-        
         if revealViewController() != nil{
             
             menuButton.target = revealViewController()
@@ -90,8 +84,16 @@ class EditAccountViewController: UIViewController {
         
         profilePicture.layer.cornerRadius = 64
         profilePicture.layer.borderWidth = 5
-        profilePicture.layer.borderColor = UIColor.init(red: 0, green: 150, blue: 109, alpha: 1).cgColor
+        profilePicture.layer.borderColor = UIColor.init(red: 0/255, green: 150/255, blue: 109/255, alpha: 1).cgColor
         
+        firstNameText.borderStyle = UITextBorderStyle.none
+        lastNameText.borderStyle = UITextBorderStyle.none
+        phoneNumber.borderStyle = UITextBorderStyle.none
+        emailText.borderStyle = UITextBorderStyle.none
+        
+        saveButton.layer.contents = 5
+        saveButton.layer.borderWidth = 1
+        saveButton.layer.borderColor = UIColor.black.cgColor
     }
     
     @IBAction func saveProfileBtn(_ sender: Any) {

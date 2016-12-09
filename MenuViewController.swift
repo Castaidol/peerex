@@ -20,7 +20,15 @@ class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profilePic.layer.cornerRadius = 45
+        profilePic.layer.borderWidth = 5
+        profilePic.layer.borderColor = UIColor.init(red: 0/255, green: 150/255, blue: 109/255, alpha: 1).cgColor
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
         ref = FIRDatabase.database().reference()
         
         ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -29,11 +37,6 @@ class MenuViewController: UIViewController {
             let firstName = value?["firstName"] as? String ?? ""
             self.nameLabel.text = firstName
         })
-        
-        profilePic.layer.cornerRadius = 45
-        profilePic.layer.borderWidth = 5
-        profilePic.layer.borderColor = UIColor.init(red: 88, green: 193, blue: 153, alpha: 1).cgColor
-
     }
 
     override func didReceiveMemoryWarning() {
