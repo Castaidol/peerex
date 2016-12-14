@@ -9,8 +9,8 @@
 import UIKit
 import CoreLocation
 import MapKit
-import FirebaseAuth
-import FirebaseDatabase
+//import FirebaseAuth
+//import FirebaseDatabase
 import Alamofire
 
 class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -32,14 +32,16 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
 
     
     var merchants: [Merchant] = []
-    var idx: Int? = 0
+    var idx: Int = 0
     
-    var amountSGD = 20
+    var amountSGD = 20.00
     
-    var ref: FIRDatabaseReference!
-    let userId: String = FIRAuth.auth()!.currentUser!.uid
-    var refHandle: UInt!
-    let user = FIRAuth.auth()?.currentUser
+    var selectedIndex: IndexPath?
+    
+//    var ref: FIRDatabaseReference!
+//    let userId: String = FIRAuth.auth()!.currentUser!.uid
+//    var refHandle: UInt!
+//    let user = FIRAuth.auth()?.currentUser
     
     
     override func viewDidLoad() {
@@ -49,7 +51,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         
         let pinchGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
-        pinchGesture.minimumPressDuration = 2
+        pinchGesture.minimumPressDuration = 1
         map.addGestureRecognizer(pinchGesture)
         
         map.delegate = self
@@ -75,15 +77,14 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         Alamofire.request("https://boiling-castle-76624.herokuapp.com/merchants", method: .get).responseJSON { (response) in
             
             if let JSON = response.result.value {
-//                print("JSON: \(JSON)")
+
                 
                 let arrayOfMerchants = JSON as! [[String: Any]]
                 
                 for merchant in arrayOfMerchants {
                     
-                    //print(merchant)
-                    
                     let merchantName = merchant["merchant_name"] as! String
+                    let merchAddress = merchant["merchant_address"] as! String
                     let merchantStatus = merchant["merchant_status"] as! Bool
                     
                     var merchantImage: String?
@@ -94,71 +95,46 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
                     let merchantRating = merchant["merchant_rating"] as! Float
                     let merchantRatingStr = "\(merchantRating)"
                     
-                    let merchantLat = merchant["lat"] as! String
-                    let merchantLatNumber = Double(merchantLat)
-                    let merchantLong = merchant["long"] as! String
-                    let merchantLongNumber = Double(merchantLong)
+                    let merchantLat = merchant["lat"] as! Double
                     
-                    self.merchants.append(Merchant(name: merchantName, location: CLLocationCoordinate2DMake(merchantLatNumber!, merchantLongNumber!), status: merchantStatus, rating: merchantRatingStr, image: merchantImage))
+                    let merchantLong = merchant["long"] as! Double
+                    
+                    
+                    self.merchants.append(Merchant(name: merchantName, location: CLLocationCoordinate2DMake(merchantLat, merchantLong), status: merchantStatus, rating: merchantRatingStr, image: merchantImage, address: merchAddress))
                     
                 }
             }
             
-            print (self.merchants)
+            for merch in self.merchants{
+                
+                print(merch.name)
+                print(merch.location)
+                print(merch.status)
+            }
+            self.reloadMap()
+            self.collectionMerch.reloadData()
         }
-//        
-//        ref = FIRDatabase.database().reference()
-//        let merchantRef = ref.child("Merchant")
-//        
-//        merchantRef.observe(.childAdded, with: { (snapshot) in
-//        
-//            print(snapshot.value!)
-//            
-//            
-//            
-//        })
-//
-//        refHandle = ref.observe(FIRDataEventType.value, with: { (snapshot) in
-//            
-//            
-//        })
-//
-//        ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            let value = snapshot.value as? NSDictionary
-//            let firstName = value?["firstName"] as? String ?? ""
-//            let lastName = value?["lastName"] as? String ?? ""
-//            let phoneNumber = value?["phoneNumber"] as? String ?? ""
-//            self.firstNameText.text = firstName
-//            self.lastNameText.text = lastName
-//            self.phoneNumber.text = phoneNumber
-//            
-//        })
 
+        /*
+        merchants.append(Merchant(name: "Merch 1", location: CLLocationCoordinate2DMake(1.2768626, 103.8431314), status: true, rating: "4.0", image: "hostel1"))
+        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
+        merchants.append(Merchant(name: "Merch 3", location:CLLocationCoordinate2DMake(1.278796, 103.841442), status: false, rating: "1.3", image: "hostel3"))
+        merchants.append(Merchant(name: "Merch 4", location:CLLocationCoordinate2DMake(1.276569, 103.842083), status: true, rating: "4.2", image: "hostel4"))
         
-        
-//        merchants.append(Merchant(name: "Merch 1", location: CLLocationCoordinate2DMake(1.2768626, 103.8431314), status: true, rating: "4.0", image: "hostel1"))
-//        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
-//        merchants.append(Merchant(name: "Merch 3", location:CLLocationCoordinate2DMake(1.278796, 103.841442), status: false, rating: "1.3", image: "hostel3"))
-//        merchants.append(Merchant(name: "Merch 4", location:CLLocationCoordinate2DMake(1.276569, 103.842083), status: true, rating: "4.2", image: "hostel4"))
-        
-        
-
-//        reloadMap()
+        reloadMap()*/
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-//        reloadMap()
-        
+
         
     }
     
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
 
@@ -183,14 +159,14 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     func reloadMap(){
        
         
-        for x in 0...merchants.count-1 {
+        for mer in 0...merchants.count-1 {
             
-            let merch = merchants[x]
+            let merch = merchants[mer]
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = merch.location
             annotation.title = merch.name
-            annotation.subtitle = "\(x)"
+            annotation.subtitle = "\(mer)"
         
             map.addAnnotation(annotation)
             
@@ -209,7 +185,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
             
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "Map Pin")
             //to display the title and subtitle
-            annotationView?.canShowCallout = true
+            annotationView?.canShowCallout = false
         }
         
         annotationView?.image = UIImage(named: "Pin")
@@ -224,9 +200,18 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         let annotation = view.annotation
         let index = Int(annotation!.subtitle!!)
         
-        collectionMerch.scrollToItem(at: IndexPath(item: index!, section: 0), at: .centeredHorizontally, animated: true)
+        view.image = UIImage(named: "Pin2")
+        let ip = IndexPath(item: index!, section: 0)
+        selectedIndex = ip
+        collectionMerch.reloadData()
+        collectionMerch.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
         
         
+        
+    }
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        
+        view.image = UIImage(named: "Pin")
     }
     
     
@@ -243,8 +228,14 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MerchantMapCollectionViewCell
         
         let merch = merchants[indexPath.row]
-        
+
         cell.configureCell(merchant: merch)
+        if indexPath == selectedIndex {
+            cell.selectView.backgroundColor = UIColor.init(red: 33/255, green: 190/255, blue: 130/255, alpha: 1)
+        } else {
+            cell.selectView.backgroundColor = .white
+
+        }
         return cell
 
     }
@@ -270,21 +261,20 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        idx = indexPath.row
-        print("valud of idx at idxpath is \(idx)")
-
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let destViewController : DetailTransactionViewController = segue.destination as! DetailTransactionViewController
         
-        let my_merchant = self.merchants[idx!]
-        print("valud of idx is \(idx)")
-        destViewController.transData = my_merchant
+        let indexPath = collectionMerch.indexPath(for: sender as! UICollectionViewCell)
+        
+        if segue.identifier == "showDetail" {
+            
+            let myMerchant = self.merchants[(indexPath?[1])!]
+            let sendAmount = self.amountSGD
+            print("valud of idx is \((indexPath?[1])!)")
+            destViewController.transData = myMerchant
+            destViewController.amountSGD = sendAmount
+        }
         
     }
     
@@ -292,9 +282,13 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         if amountSGD < 100 {
             
-            amountSGD += 10
+            amountSGD += 10.00
             
-            amounMoney.text = "$\(amountSGD)"
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            
+            amounMoney.text = "$\(formatter.string(from: amountSGD as NSNumber)!)"
         }
         
     }
@@ -303,9 +297,14 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         if amountSGD > 10 {
             
-            amountSGD -= 10
+            amountSGD -= 10.00
             
-            amounMoney.text = "$\(amountSGD)"
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            
+            amounMoney.text = "$\(formatter.string(from: amountSGD as NSNumber)!)"
+            
         }
         
     }
@@ -318,7 +317,11 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     
     func styleView(){
         
-        amounMoney.text = "$\(amountSGD)"
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        
+        amounMoney.text = "$\(formatter.string(from: amountSGD as NSNumber)!)"
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()

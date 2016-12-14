@@ -16,14 +16,16 @@ class Merchant{
     var status: Bool
     var rating: String
     var image: String?
+    var address: String
     
-    init(name: String, location: CLLocationCoordinate2D, status: Bool, rating: String, image: String?) {
+    init(name: String, location: CLLocationCoordinate2D, status: Bool, rating: String, image: String?, address: String) {
         
         
         self.name = name
         self.location = location
         self.status = status
         self.rating = rating
+        self.address = address
         
         if let image = image {
             self.image = image

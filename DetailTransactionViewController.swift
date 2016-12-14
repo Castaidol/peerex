@@ -15,21 +15,42 @@ class DetailTransactionViewController: UIViewController {
     @IBOutlet weak var openingHoursLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
     @IBOutlet weak var feeLabel: UILabel!
-    @IBOutlet weak var merchPhoneLabel: UILabel!
     @IBOutlet weak var creditCardLabel: UILabel!
     @IBOutlet weak var merchLocationLabel: UILabel!
+    @IBOutlet weak var merchRating: UILabel!
+    @IBOutlet weak var merchImage: UIImageView!
+    @IBOutlet weak var requestCashBtn: UIButton!
+    @IBOutlet weak var callMerchantBtn: UIButton!
     
     var transData: Merchant!
+    var amountSGD: Double!
+    var fees: Double!
+    var total: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        requestCashBtn.layer.cornerRadius = 5
+        callMerchantBtn.layer.cornerRadius = 5
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         
-        merchNameLabel.text = transData.name
+        fees = (amountSGD/100)*9
+        total = fees + amountSGD
         
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        
+        cashRequestedLabel.text = "$\(formatter.string(from: amountSGD as NSNumber)!)"
+        feeLabel.text = "$\(formatter.string(from: fees as NSNumber)!)"
+        totalCostLabel.text = "$\(formatter.string(from: total as NSNumber)!)"
+        
+        merchNameLabel.text = transData.name
+        merchRating.text = transData.rating
+        merchLocationLabel.text = transData.address
 
         
     }
@@ -41,6 +62,17 @@ class DetailTransactionViewController: UIViewController {
     }
     
 
+    @IBAction func requestCashBtn(_ sender: Any) {
+        
+        let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "popUp") as! PopUpViewController
+        self.addChildViewController(popOverVC)
+        popOverVC.view.frame = self.view.frame
+        self.view.addSubview(popOverVC.view)
+        popOverVC.didMove(toParentViewController: self)
+        
+        self.navigationController?.navigationBar.isHidden = true
+        
+    }
    
 
 }

@@ -45,21 +45,11 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
-            
         }
         
-        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
+        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2", address: "non importa"))
         
-       
-        
-        
-        
-       // reloadMap()
-        
-        
-        
-
-    }
+     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -130,25 +120,6 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         return renderer
     }
     
-//    func reloadMap(){
-//        
-//        
-//        for x in 0...merchants.count-1 {
-//            
-//            let merch = merchants[x]
-//            
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = merch.location
-//            annotation.title = merch.name
-//            annotation.subtitle = "\(x)"
-//            //            annotation.subtitle = merch.rating
-//            
-//            map.addAnnotation(annotation)
-//            
-//        }
- //   }
-
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         
@@ -167,31 +138,6 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         }
     
    }
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        
-//        if annotation is MKUserLocation {
-//            return nil
-//        }
-//        
-//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "Map Pin")
-//        
-//        if annotationView == nil {
-//            
-//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "Map Pin")
-//            //to display the title and subtitle
-//            annotationView?.canShowCallout = true
-//        }
-//        
-//        annotationView?.image = UIImage(named: "Pin")
-//        
-//        
-//        return annotationView
-//        
-//        
-//    }
 
-
-
-    
 
 }
