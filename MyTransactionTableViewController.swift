@@ -22,12 +22,12 @@ class MyTransactionTableViewController: UITableViewController{
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "22/11/2016", time: "10:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
-        transactions.append(Transaction(transactionID: "trans1", value: "25.00", date: "26/11/2016", time: "13:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "24/11/2016", time: "9:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
-        transactions.append(Transaction(transactionID: "trans1", value: "100.00", date: "6/11/2016", time: "10:30", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "12/11/2016", time: "11:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Failed"))
-        transactions.append(Transaction(transactionID: "trans1", value: "35.00", date: "19/11/2016", time: "22:15", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed"))
+        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "22/11/2016", time: "10:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
+        transactions.append(Transaction(transactionID: "trans1", value: "25.00", date: "26/11/2016", time: "13:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
+        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "24/11/2016", time: "9:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
+        transactions.append(Transaction(transactionID: "trans1", value: "100.00", date: "6/11/2016", time: "10:30", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
+        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "12/11/2016", time: "11:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Failed", totalCost: "2"))
+        transactions.append(Transaction(transactionID: "trans1", value: "35.00", date: "19/11/2016", time: "22:15", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
         
             
         
@@ -43,11 +43,7 @@ class MyTransactionTableViewController: UITableViewController{
         }
 
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
     }
 
     override func didReceiveMemoryWarning() {

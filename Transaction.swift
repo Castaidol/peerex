@@ -12,14 +12,15 @@ class Transaction{
     
     var transactionID: String
     var value: String
+    var fee: String
+    var totalCost: String
     var date: String
     var time: String
-    var fee: String
     var address: String
     var merchName: String
     var status: String
     
-    init(transactionID: String,value: String, date: String, time: String, fee: String, address: String, merchName: String, status: String) {
+    init(transactionID: String,value: String, date: String, time: String, fee: String, address: String, merchName: String, status: String, totalCost: String) {
         
         self.transactionID = transactionID
         self.value = value
@@ -29,6 +30,7 @@ class Transaction{
         self.address = address
         self.merchName = merchName
         self.status = status
+        self.totalCost = totalCost
         
     }
     

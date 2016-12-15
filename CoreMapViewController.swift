@@ -83,24 +83,51 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
                 
                 for merchant in arrayOfMerchants {
                     
-                    let merchantName = merchant["merchant_name"] as! String
-                    let merchAddress = merchant["merchant_address"] as! String
-                    let merchantStatus = merchant["merchant_status"] as! Bool
-                    
                     var merchantImage: String?
+                    var merchantName: String?
+                    var merchAddress: String?
+                    var merchantStatus: Bool?
+                    var merchantRating: Float?
+                    var merchantLat: Double?
+                    var merchantLong:Double?
+                    
+                    if merchant["merchant_name"] != nil {
+                        
+                        merchantName = merchant["merchant_name"] as? String
+                    
+                    }
+                    if merchant["merchant_address"] != nil {
+                        
+                        merchAddress = merchant["merchant_address"] as? String
+                    
+                    }
+                    if merchant["merchant_status"] != nil {
+                        
+                        merchantStatus = merchant["merchant_status"] as? Bool
+                        
+                    }
                     if merchant["merchant_avatar"] != nil {
+                        
                         merchantImage = merchant["merchant_avatar"] as? String
+                        
+                    }
+                    if merchant["merchant_rating"] != nil {
+                    
+                        merchantRating = merchant["merchant_rating"] as? Float
                     }
                     
-                    let merchantRating = merchant["merchant_rating"] as! Float
                     let merchantRatingStr = "\(merchantRating)"
                     
-                    let merchantLat = merchant["lat"] as! Double
+                    if merchant["lat"] != nil {
+                        
+                        merchantLat = merchant["lat"] as? Double
+                    }
+                    if merchant["long"] != nil {
+                        merchantLong = merchant["long"] as? Double
+                    }
                     
-                    let merchantLong = merchant["long"] as! Double
                     
-                    
-                    self.merchants.append(Merchant(name: merchantName, location: CLLocationCoordinate2DMake(merchantLat, merchantLong), status: merchantStatus, rating: merchantRatingStr, image: merchantImage, address: merchAddress))
+                    self.merchants.append(Merchant(name: merchantName!, location: CLLocationCoordinate2DMake(merchantLat!, merchantLong!), status: merchantStatus!, rating: merchantRatingStr, image: merchantImage, address: merchAddress!))
                     
                 }
             }

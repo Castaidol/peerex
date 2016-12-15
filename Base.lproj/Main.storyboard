@@ -790,7 +790,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6t9-pS-lK0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2897" y="510"/>
+            <point key="canvasLocation" x="2897" y="735"/>
         </scene>
         <!--Navigation Map View Controller-->
         <scene sceneID="Qzs-wo-WUY">
@@ -821,7 +821,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="18b-EY-1I5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3784.8000000000002" y="509.59520239880067"/>
+            <point key="canvasLocation" x="3785" y="734"/>
         </scene>
         <!--Detail Transaction View Controller-->
         <scene sceneID="WaQ-nh-crh">
@@ -1068,7 +1068,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XI6-5L-wEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4757.6000000000004" y="-269.86506746626691"/>
+            <point key="canvasLocation" x="4706" y="-419"/>
         </scene>
         <!--Pop Up View Controller-->
         <scene sceneID="7Fh-NC-A6t">
@@ -1107,6 +1107,7 @@
                                         </state>
                                         <connections>
                                             <action selector="requestCashBtn:" destination="4Ab-Tf-dfX" eventType="touchUpInside" id="avX-Vj-Jvv"/>
+                                            <action selector="requestMoneyBtn:" destination="3Tl-Rd-WHb" eventType="touchUpInside" id="D9p-Bh-FqE"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ual-hj-tHI">
@@ -1144,7 +1145,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o7Z-pH-hsZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5869.6000000000004" y="-300"/>
+            <point key="canvasLocation" x="5570" y="-269"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3mW-Bh-Br6">

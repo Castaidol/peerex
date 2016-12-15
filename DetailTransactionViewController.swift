@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import Alamofire
+
+/*protocol PassDataDelegate{
+    
+    //func passTheArray(dataArray: Merchant)
+    func passTheMoneyAmount(dataMoney: Double)
+}*/
 
 class DetailTransactionViewController: UIViewController {
 
@@ -22,10 +29,16 @@ class DetailTransactionViewController: UIViewController {
     @IBOutlet weak var requestCashBtn: UIButton!
     @IBOutlet weak var callMerchantBtn: UIButton!
     
+    //var delegate: PassDataDelegate?
+    //var dataArray: Merchant?
+    //var dataMoney: Double?
+    
     var transData: Merchant!
     var amountSGD: Double!
     var fees: Double!
     var total: Double!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +74,16 @@ class DetailTransactionViewController: UIViewController {
         
     }
     
+   /* override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if self.isBeingDismissed {
+            self.delegate?.passTheMoneyAmount(dataMoney: amountSGD)
+        }
+    }*/
+    
 
     @IBAction func requestCashBtn(_ sender: Any) {
+        
         
         let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "popUp") as! PopUpViewController
         self.addChildViewController(popOverVC)
@@ -73,6 +94,6 @@ class DetailTransactionViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         
     }
-   
 
+            
 }
