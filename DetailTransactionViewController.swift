@@ -89,6 +89,8 @@ class DetailTransactionViewController: UIViewController {
         
         popOverVC.transData = self.transData
         popOverVC.amountSGD = self.amountSGD
+        popOverVC.fees = self.fees
+        popOverVC.total = self.total
         
         self.addChildViewController(popOverVC)
         popOverVC.view.frame = self.view.frame

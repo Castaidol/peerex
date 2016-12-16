@@ -34,14 +34,8 @@ class MyTransactionTableViewController: UITableViewController{
             
             let value = snapshot.value as? NSDictionary
             
-            print(value!)
-            
             for trans in value! {
                 
-                
-                
-                
-                print(trans.key)
                 
                 self.ref.child("Traveler").child(self.userId).child("Transactions").child(trans.key as! String).observeSingleEvent(of: .value, with: { (snapshot) in
                     
@@ -51,34 +45,21 @@ class MyTransactionTableViewController: UITableViewController{
                     let status = data?["status"] as? String ?? ""
                     let date = data?["date"] as? String ?? ""
                     let time = data?["time"] as? String ?? ""
+                    let address = data?["merchantAddress"] as? String ?? ""
+                    let name = data?["merchantName"] as? String ?? ""
+                    let requestedMoney = data?["requestedMoney"] as? Double
                 
                     
-                    self.transactions.append(Transaction(transactionID: transactionID, value: " evwev", date: date, time: time, fee: "ecewew", address: "wvewvwe", merchName: "efwe", status: status, totalCost: "efewgrg"))
+                    self.transactions.append(Transaction(transactionID: transactionID, value: String(describing: requestedMoney!), date: date, time: time, fee: "ecewew", address: address, merchName: name, status: status, totalCost: "efewgrg"))
                     
-                    print(self.transactions)
-                
-                    //print(transactions)
                     
                     self.tableView.reloadData()
                 })
-                
-                
                 
             }
             
         })
 
-        /*
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "22/11/2016", time: "10:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
-        transactions.append(Transaction(transactionID: "trans1", value: "25.00", date: "26/11/2016", time: "13:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "24/11/2016", time: "9:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
-        transactions.append(Transaction(transactionID: "trans1", value: "100.00", date: "6/11/2016", time: "10:30", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
-        transactions.append(Transaction(transactionID: "trans1", value: "50.00", date: "12/11/2016", time: "11:00", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Failed", totalCost: "2"))
-        transactions.append(Transaction(transactionID: "trans1", value: "35.00", date: "19/11/2016", time: "22:15", fee: "1.20", address: "somewhere", merchName: "merchant Name Here", status: "Completed", totalCost: "2"))
-        */
-        //print(transactions)
-        
-        
         if revealViewController() != nil{
             
             menuButton.target = revealViewController()
@@ -86,13 +67,8 @@ class MyTransactionTableViewController: UITableViewController{
             
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
-            
         }
-        
-        
-
-
-        
+  
     }
 
     override func didReceiveMemoryWarning() {
@@ -120,6 +96,20 @@ class MyTransactionTableViewController: UITableViewController{
         cell.configureCell(transaction: transaction)
         return cell
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destViewController : MyTransactionsDetailsViewController = segue.destination as! MyTransactionsDetailsViewController
+        
+        let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
+        
+        if segue.identifier == "showTransDetail" {
+            
+            let transactionID = transactions[(indexPath?.row)!].transactionID
+            
+            destViewController.transactionID = transactionID
+        }
+
     }
     
 }

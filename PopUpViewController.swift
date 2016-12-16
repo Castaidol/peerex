@@ -23,6 +23,9 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
     
     var transData: Merchant!
     var amountSGD: Double!
+    var fees: Double!
+    var total: Double!
+    var transRefID:String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,12 +67,13 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
     
     @IBAction func requestMoneyBtn(_ sender: Any) {
         
+        
         ref = FIRDatabase.database().reference()
-        refHandle = ref.observe(FIRDataEventType.value, with: { (FIRDataSnapshot) in
-            let dataDict = FIRDataSnapshot.value as! [String : AnyObject]
+        //refHandle = ref.observe(FIRDataEventType.value, with: { (FIRDataSnapshot) in
+          //  let dataDict = FIRDataSnapshot.value as! [String : AnyObject]
             
-            print (dataDict)
-        })
+            //print (dataDict)
+        //})
         
         ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -96,9 +100,11 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
                 
                     let transactionRef = json?["transref"] as! String
                     let status = json?["status"] as! String
+                    
+                    self.transRefID = transactionRef
                 
-                    print(transactionRef)
-                    print(status)
+                    //print(transactionRef)
+                    //print(status)
                     
                     let date = NSDate()
                     let calendar = NSCalendar.current
@@ -110,14 +116,15 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
                     let time = "\(hour):\(minutes)"
                     let dmy = "\(day)-\(month)-\(year)"
                     
-                    print(dmy)
-                    print(time)
+                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status, "requestedMoney" : self.amountSGD, "fees" : self.fees, "totalCharged" : self.total, "merchantName" : self.transData.name, "merchantAddress" : self.transData.address])
                     
-                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status])
                 
                 }
+                
             }
+            
          })
+                
     }
 
     
@@ -155,5 +162,17 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
         })
         
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destViewController : NavigationMapViewController = segue.destination as! NavigationMapViewController
+        
+        if segue.identifier == "goToDirection" {
+            
+            destViewController.transData = self.transData
+            destViewController.transRefID = self.transRefID
+        }
+        
     }
 }

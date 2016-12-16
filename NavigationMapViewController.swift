@@ -10,16 +10,19 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var directionTableView: UITableView!
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+    var reuseIdentifier = "requestCell"
     
-    var merchants: [Merchant] = []
+    //var merchants: [Merchant] = []
+    var transData: Merchant!
+    var transRefID:String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +30,18 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         
         map.delegate = self
         
+        print(transData.name)
+        print(transData.address)
+        
+        self.directionTableView.reloadData()
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 500
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -47,8 +56,7 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             
         }
         
-        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2", address: "non importa"))
-        
+    
      }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +66,7 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
     
     func showDirectionsFromCurrentLocation() {
         
-        let destinationLocation = merchants[0].location
+        let destinationLocation = transData.location
         
         let sourcePlacemark = MKPlacemark(coordinate: userLocation, addressDictionary: nil)
         let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
@@ -138,6 +146,36 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         }
     
    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        
+        return 1
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! CurrentTransactionTableViewCell
+        
+        let merchName = transData.name
+        let merchAddress = transData.address
+        //let transId = transRefID
+        
+        cell.merchantName.text = merchName
+        cell.merchantAddress.text = merchAddress
+        
+        //cell.transactionID.text = transId
+        
+        return cell
+    }
+    
+    
+    public func numberOfSections(in tableView: UITableView) -> Int{
+        
+        return 1
+        
+    }
+
 
 
 }
