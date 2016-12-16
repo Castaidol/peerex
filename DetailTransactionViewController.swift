@@ -86,10 +86,15 @@ class DetailTransactionViewController: UIViewController {
         
         
         let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "popUp") as! PopUpViewController
+        
+        popOverVC.transData = self.transData
+        popOverVC.amountSGD = self.amountSGD
+        
         self.addChildViewController(popOverVC)
         popOverVC.view.frame = self.view.frame
         self.view.addSubview(popOverVC.view)
         popOverVC.didMove(toParentViewController: self)
+        
         
         self.navigationController?.navigationBar.isHidden = true
         

@@ -21,7 +21,8 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
     var refHandle: UInt!
     let user = FIRAuth.auth()?.currentUser
     
-
+    var transData: Merchant!
+    var amountSGD: Double!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,8 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
         
         showAnimate()
         
-        
+        merchNAme.text = transData.name
+        amountMoney.text = String(amountSGD)
         
         /*let pvc = storyboard?.instantiateViewController(withIdentifier: "DetailTransactionViewController") as! DetailTransactionViewController
         pvc.dataMoney = 0
