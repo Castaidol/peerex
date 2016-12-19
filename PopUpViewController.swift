@@ -11,10 +11,14 @@ import Alamofire
 import FirebaseAuth
 import FirebaseDatabase
 
-class PopUpViewController: UIViewController/*, PassDataDelegate*/{
+
+class PopUpViewController: UIViewController{
     
     @IBOutlet weak var amountMoney: UILabel!
     @IBOutlet weak var merchNAme: UILabel!
+    @IBOutlet weak var requestMoney: UIButton!
+    @IBOutlet weak var cancelRequest: UIButton!
+    @IBOutlet weak var popView: UIView!
     
     var ref: FIRDatabaseReference!
     let userId: String = FIRAuth.auth()!.currentUser!.uid
@@ -26,22 +30,32 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
     var fees: Double!
     var total: Double!
     var transRefID:String!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        popView.layer.cornerRadius = 8
 
-               self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         
         showAnimate()
         
-        merchNAme.text = transData.name
-        amountMoney.text = String(amountSGD)
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
         
-        /*let pvc = storyboard?.instantiateViewController(withIdentifier: "DetailTransactionViewController") as! DetailTransactionViewController
-        pvc.dataMoney = 0
-        pvc.delegate = self
-        self.present(pvc, animated: true, completion: nil)
-        */
+        merchNAme.text = "from \(transData.name)"
+        amountMoney.text = "$\(formatter.string(from: amountSGD as NSNumber)!)"
+        
+        requestMoney.layer.cornerRadius = 5
+        cancelRequest.layer.cornerRadius = 5
+        cancelRequest.layer.borderColor = UIColor.black.cgColor
+        cancelRequest.layer.borderWidth = 1
+        
+        
+        
         
     }
 
@@ -50,32 +64,14 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
        
     }
     
-    /*
-    func passTheArray(data: Merchant){
     
-        merchNAme.text = data.name
-    
-    }
-    
-    func passTheMoneyAmount(dataMoney: Double){
-        
-        self.amountMoney.text = "\(dataMoney)"
-        
-        
-    }*/
 
     
     @IBAction func requestMoneyBtn(_ sender: Any) {
         
         
-        ref = FIRDatabase.database().reference()
-        //refHandle = ref.observe(FIRDataEventType.value, with: { (FIRDataSnapshot) in
-          //  let dataDict = FIRDataSnapshot.value as! [String : AnyObject]
-            
-            //print (dataDict)
-        //})
-        
-        ref.child("Traveler").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref = FIRDatabase.database().reference()
+        self.ref.child("Traveler").child(self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
             let firstName = value?["firstName"] as? String ?? ""
@@ -90,8 +86,9 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
             parameters["lastname"] = "\(lastName)" as AnyObject?
             parameters["email"] = "\(email)" as AnyObject
             parameters["number"] = Int(phoneNumber) as AnyObject
-            parameters["merchant_id"] = 1 as AnyObject
-        
+            parameters["merchant_id"] = "\(self.transData.merchID)" as AnyObject
+            parameters["amount"] = self.amountSGD as AnyObject
+                    
             Alamofire.request("https://boiling-castle-76624.herokuapp.com/transactionapi", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { (response) in
             
                 if response.result.value != nil {
@@ -102,9 +99,9 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
                     let status = json?["status"] as! String
                     
                     self.transRefID = transactionRef
-                
-                    //print(transactionRef)
-                    //print(status)
+                    self.performSegue(withIdentifier: "goToDirection", sender: nil)
+                    
+                    
                     
                     let date = NSDate()
                     let calendar = NSCalendar.current
@@ -116,7 +113,12 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
                     let time = "\(hour):\(minutes)"
                     let dmy = "\(day)-\(month)-\(year)"
                     
-                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status, "requestedMoney" : self.amountSGD, "fees" : self.fees, "totalCharged" : self.total, "merchantName" : self.transData.name, "merchantAddress" : self.transData.address])
+                    var image = ""
+                    if let i = self.transData.image?.absoluteString {
+                        image = i
+                    }
+                    
+                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status, "requestedMoney" : self.amountSGD, "fees" : self.fees, "totalCharged" : self.total, "merchantName" : self.transData.name, "merchantAddress" : self.transData.address, "merchLAt" : self.transData.location.latitude, "merchLong" : self.transData.location.longitude, "merchImage" : image, "rating" : self.transData.rating, "merchPhone" : self.transData.merchPhone])
                     
                 
                 }
@@ -124,7 +126,7 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
             }
             
          })
-                
+        
     }
 
     
@@ -143,6 +145,7 @@ class PopUpViewController: UIViewController/*, PassDataDelegate*/{
             
             self.view.alpha = 1.0
             self.view.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
 
         })
         

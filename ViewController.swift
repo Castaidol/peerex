@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import SVProgressHUD
 
 class ViewController: UIViewController {
 
@@ -24,6 +25,7 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         
         if FIRAuth.auth()?.currentUser != nil{
             

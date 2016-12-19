@@ -9,31 +9,49 @@
 import UIKit
 import MapKit
 import CoreLocation
+import FirebaseAuth
+import FirebaseDatabase
+import AlamofireImage
 
-class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate{
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var map: MKMapView!
-    @IBOutlet weak var directionTableView: UITableView!
+    @IBOutlet weak var merchImage: UIImageView!
+    @IBOutlet weak var merchName: UILabel!
+    @IBOutlet weak var merchAddress: UILabel!
+    @IBOutlet weak var transID: UILabel!
+    
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var reuseIdentifier = "requestCell"
     
-    //var merchants: [Merchant] = []
     var transData: Merchant!
     var transRefID:String!
+    var destinationLocation: CLLocationCoordinate2D!
 
+    
+    var ref: FIRDatabaseReference!
+    let userId: String = FIRAuth.auth()!.currentUser!.uid
+    let user = FIRAuth.auth()?.currentUser
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
+        
         map.delegate = self
         
-        print(transData.name)
-        print(transData.address)
-        
-        self.directionTableView.reloadData()
+        if transData != nil{
+            
+            if transData.image != nil{
+                merchImage.af_setImage(withURL: transData.image!)
+            }
+            merchName.text = transData.name
+            merchAddress.text = transData.address
+            transID.text = transRefID
+        }
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -45,8 +63,8 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-
-
+        
+        
         if revealViewController() != nil{
             
             menuButton.target = revealViewController()
@@ -56,20 +74,17 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             
         }
         
-    
-     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
-    func showDirectionsFromCurrentLocation() {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    func showDirections(){
         
-        let destinationLocation = transData.location
-        
-        let sourcePlacemark = MKPlacemark(coordinate: userLocation, addressDictionary: nil)
         let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
+        let sourcePlacemark = MKPlacemark(coordinate: userLocation, addressDictionary: nil)
         
         let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
         let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
@@ -115,10 +130,103 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             let rect = route.polyline.boundingMapRect
             self.map.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
+
+    
+    
+        
+    }
+    
+    func showDirectionsFromCurrentLocation() {
+        
+        if transData != nil{
+        
+            destinationLocation = transData.location
+            
+            showDirections()
+            
+        }else{
+            
+            ref = FIRDatabase.database().reference()
+            ref.child("Traveler").child(userId).child("Transactions").child(transRefID).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                
+                let value = snapshot.value as? NSDictionary
+                
+                let merchName = value?["merchantName"] as? String ?? ""
+                let merchAddress = value?["merchantAddress"] as? String ?? ""
+                let merchLat = value?["merchLAt"] as? Double
+                let merchLong = value?["merchLong"] as? Double
+                let merchImage = value?["merchImage"] as? String ?? ""
+                
+                self.merchName.text = merchName
+                self.merchAddress.text = merchAddress
+                self.transID.text = self.transRefID
+                
+                if let url = URL(string: merchImage) {
+                    self.merchImage.af_setImage(withURL: url)
+                }
+                
+                self.destinationLocation = CLLocationCoordinate2D(latitude: merchLat!, longitude: merchLong!)
+                
+                
+                self.showDirections()
+
+            })
+
+            
+        }
+        /*
+        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
+        let sourcePlacemark = MKPlacemark(coordinate: userLocation, addressDictionary: nil)
+        
+        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
+        let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
+        
+        let sourceAnnotation = MKPointAnnotation()
+        sourceAnnotation.title = "My position"
+        
+        if let location = sourcePlacemark.location {
+            sourceAnnotation.coordinate = location.coordinate
+        }
+        
+        
+        let destinationAnnotation = MKPointAnnotation()
+        destinationAnnotation.title = "Merch"
+        
+        if let location = destinationPlacemark.location {
+            destinationAnnotation.coordinate = location.coordinate
+        }
+        
+        self.map.showAnnotations([sourceAnnotation,destinationAnnotation], animated: true )
+        
+        let directionRequest = MKDirectionsRequest()
+        directionRequest.source = sourceMapItem
+        directionRequest.destination = destinationMapItem
+        directionRequest.transportType = .walking
+        
+        let directions = MKDirections(request: directionRequest)
+        
+        directions.calculate {
+            (response, error) -> Void in
+            
+            guard let response = response else {
+                if let error = error {
+                    print("Error: \(error)")
+                }
+                
+                return
+            }
+            
+            let route = response.routes[0]
+            self.map.add((route.polyline), level: MKOverlayLevel.aboveRoads)
+            
+            let rect = route.polyline.boundingMapRect
+            self.map.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
+            }*/
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-    
+        
         
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor.init(red: 33/255, green: 190/255, blue: 130/255, alpha: 1)
@@ -144,38 +252,24 @@ class NavigationMapViewController: UIViewController, CLLocationManagerDelegate, 
             showDirectionsFromCurrentLocation()
             
         }
-    
-   }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        
-        return 1
         
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! CurrentTransactionTableViewCell
-        
-        let merchName = transData.name
-        let merchAddress = transData.address
-        //let transId = transRefID
-        
-        cell.merchantName.text = merchName
-        cell.merchantAddress.text = merchAddress
-        
-        //cell.transactionID.text = transId
-        
-        return cell
-    }
     
-    
-    public func numberOfSections(in tableView: UITableView) -> Int{
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        return 1
+        
+        if segue.identifier == "goToDetail"{
+            
+            let destinationDetail : CurrentTransactionDetailsViewController = segue.destination as! CurrentTransactionDetailsViewController
+            
+            destinationDetail.transRefID = self.transRefID
+            
+            
+        }
+        
+        
         
     }
-
-
 
 }

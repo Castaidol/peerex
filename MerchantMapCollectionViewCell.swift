@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
+import CoreLocation
 
 class MerchantMapCollectionViewCell: UICollectionViewCell {
     
@@ -16,14 +19,17 @@ class MerchantMapCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var merchRatingLabel: UILabel!
     @IBOutlet weak var selectView: UIView!
     
+    var manager: CLLocationManager!
+    
     func configureCell(merchant: Merchant) {
         
         self.merchNameLabel.text = merchant.name
-        self.merchRatingLabel.text = merchant.rating
-        self.merchDistanceLabel.text = "x m"
+        self.merchRatingLabel.text = "\(merchant.rating)"
         self.selectView.backgroundColor = UIColor.white
-        if let image = merchant.image {
-            self.merchImage.image = UIImage(named: image)
+        if merchant.image != nil {
+            self.merchImage.af_setImage(withURL: merchant.image!)
+        } else {
+            self.merchImage.image = nil
         }
         
     }

@@ -9,8 +9,11 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
+import AlamofireImage
+import MobileCoreServices
 
-class EditAccountViewController: UIViewController {
+class EditAccountViewController: UIViewController, UIImagePickerControllerDelegate {
     
     
 
@@ -34,6 +37,7 @@ class EditAccountViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         
         styleView()
@@ -103,6 +107,18 @@ class EditAccountViewController: UIViewController {
         let travelerPhoneNumber: String = self.phoneNumber.text!
         
         self.ref.child("Traveler").child(userId).setValue(["firstName" : travelerFirstName, "lastName" : travelerLastName, "phoneNumber" : travelerPhoneNumber])
+        
+    }
+    
+    @IBAction func setPhoto (sender: AnyObject){
+        
+        /*let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [kUTTypeImage as String]
+        
+        imagePicker.delegate = self
+        presentedViewController(imagePicker, animated: true, completion: nil)
+        */
         
     }
     

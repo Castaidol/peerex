@@ -9,9 +9,10 @@
 import UIKit
 import CoreLocation
 import MapKit
-//import FirebaseAuth
-//import FirebaseDatabase
+import FirebaseAuth
+import FirebaseDatabase
 import Alamofire
+import SVProgressHUD
 
 class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -38,11 +39,10 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     
     var selectedIndex: IndexPath?
     
-//    var ref: FIRDatabaseReference!
-//    let userId: String = FIRAuth.auth()!.currentUser!.uid
-//    var refHandle: UInt!
-//    let user = FIRAuth.auth()?.currentUser
-    
+    var ref: FIRDatabaseReference!
+    let userId: String = FIRAuth.auth()!.currentUser!.uid
+    let user = FIRAuth.auth()?.currentUser
+    var transactionID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,14 +82,25 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
                 let arrayOfMerchants = JSON as! [[String: Any]]
                 
                 for merchant in arrayOfMerchants {
-                    
-                    var merchantImage: String?
+                    var url: URL?
                     var merchantName: String?
                     var merchAddress: String?
                     var merchantStatus: Bool?
                     var merchantRating: Float?
                     var merchantLat: Double?
                     var merchantLong:Double?
+                    var merchId:String?
+                    var merchPhone: String?
+                    
+                    if merchant["merchant_id"] != nil{
+                        
+                        merchId = merchant["merchant_id"] as? String
+                        
+                    }
+                    if merchant["merchant_number"] != nil{
+                    
+                        merchPhone = merchant["merchant_number"] as? String
+                    }
                     
                     if merchant["merchant_name"] != nil {
                         
@@ -106,55 +117,112 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
                         merchantStatus = merchant["merchant_status"] as? Bool
                         
                     }
-                    if merchant["merchant_avatar"] != nil {
-                        
-                        merchantImage = merchant["merchant_avatar"] as? String
-                        
-                    }
                     if merchant["merchant_rating"] != nil {
                     
                         merchantRating = merchant["merchant_rating"] as? Float
                     }
-                    
-                    let merchantRatingStr = "\(merchantRating)"
-                    
                     if merchant["lat"] != nil {
                         
                         merchantLat = merchant["lat"] as? Double
                     }
                     if merchant["long"] != nil {
+                        
                         merchantLong = merchant["long"] as? Double
+                    }
+                    if let avatar = merchant["merchant_avatar"] as? String {
+                     
+                        url = URL(string: avatar)!
                     }
                     
                     
-                    self.merchants.append(Merchant(name: merchantName!, location: CLLocationCoordinate2DMake(merchantLat!, merchantLong!), status: merchantStatus!, rating: merchantRatingStr, image: merchantImage, address: merchAddress!))
+                    self.merchants.append(Merchant(name: merchantName!, location: CLLocationCoordinate2DMake(merchantLat!, merchantLong!), status: merchantStatus!, rating: merchantRating!, image: url, address: merchAddress!, merchID: merchId!, merchPhone: merchPhone!))
+                    
                     
                 }
             }
             
-            for merch in self.merchants{
+            /*for merch in self.merchants{
                 
                 print(merch.name)
                 print(merch.location)
                 print(merch.status)
-            }
+            }*/
             self.reloadMap()
             self.collectionMerch.reloadData()
         }
-
-        /*
-        merchants.append(Merchant(name: "Merch 1", location: CLLocationCoordinate2DMake(1.2768626, 103.8431314), status: true, rating: "4.0", image: "hostel1"))
-        merchants.append(Merchant(name: "Merch 2", location:CLLocationCoordinate2DMake(1.2769667, 103.8434729), status: true, rating: "5.0", image: "hostel2"))
-        merchants.append(Merchant(name: "Merch 3", location:CLLocationCoordinate2DMake(1.278796, 103.841442), status: false, rating: "1.3", image: "hostel3"))
-        merchants.append(Merchant(name: "Merch 4", location:CLLocationCoordinate2DMake(1.276569, 103.842083), status: true, rating: "4.2", image: "hostel4"))
-        
-        reloadMap()*/
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
+        // show loading and disable interactions
+        //SVProgressHUD.show()
+        ref = FIRDatabase.database().reference()
+        ref.child("Traveler").child(userId).child("Transactions").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            
+            let value = snapshot.value as? NSDictionary
+            
+            if value != nil{
+                for trans in value! {
+                    
+                    
+                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(trans.key as! String).observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        let data = snapshot.value as? NSDictionary
+                        
+                        let status = data?["status"] as? String ?? ""
+                        
+                        // dismiss loading screen, enable interactions
+                        //SVProgressHUD.dismiss()
+                        if status == "pending"{
+                            
+                            var parameters: [String: Any] = [:]
+                            parameters["transref"] = "\(trans.key)"
+                            
+                            print(trans.key)
+                            
+                            Alamofire.request("https://boiling-castle-76624.herokuapp.com/completeapi", method: .get, parameters: parameters).responseJSON { (response) in
+                                
+                                
+                                if let JSON = response.result.value {
+                                    
+                                    
+                                    let arrayOfMerchants = JSON as! [[String: Any]]
+                                    
+                                    for merchant in arrayOfMerchants {
+                                        
+                                        
+                                        var stato: String?
+                                    
+                                    print(arrayOfMerchants)
+                                    
+                                    stato = merchant["status"] as? String
+                                        
+                                    self.transactionID = data?["transactionID"] as? String ?? ""
+                                    
+                                    if stato == "pending"{
+                                        
+                                        
+                                        self.performSegue(withIdentifier: "onGoing", sender: nil)
+                                    
+                                    }else if stato == "completed"{
+                                        
+                                        self.ref.child("Traveler/\(self.userId)/Transactions/\(self.transactionID!)/status").setValue(stato)
+                                        
+                                        }
+                                    }
+                                
+                                
+                                }
+                            }
+                        }
+                    })
+                    
+                }}
+        })
 
+        
         
     }
     
@@ -170,7 +238,7 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         if let location = manager.location?.coordinate {
             
-            print("location updated, setting map region")
+            //print("location updated, setting map region")
             
             userLocation = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
             
@@ -255,8 +323,11 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MerchantMapCollectionViewCell
         
         let merch = merchants[indexPath.row]
+        let merchLocation = CLLocation(latitude: merchants[indexPath.row].location.latitude, longitude: merchants[indexPath.row].location.longitude)
+        let userLoc = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
 
         cell.configureCell(merchant: merch)
+        cell.merchDistanceLabel.text = "\(Int(merchLocation.distance(from: userLoc)))m away"
         if indexPath == selectedIndex {
             cell.selectView.backgroundColor = UIColor.init(red: 33/255, green: 190/255, blue: 130/255, alpha: 1)
         } else {
@@ -290,17 +361,28 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let destViewController : DetailTransactionViewController = segue.destination as! DetailTransactionViewController
-        
-        let indexPath = collectionMerch.indexPath(for: sender as! UICollectionViewCell)
         
         if segue.identifier == "showDetail" {
+            
+            let destViewController : DetailTransactionViewController = segue.destination as! DetailTransactionViewController
+            
+            
+            let indexPath = collectionMerch.indexPath(for: sender as! UICollectionViewCell)
+
             
             let myMerchant = self.merchants[(indexPath?[1])!]
             let sendAmount = self.amountSGD
             print("valud of idx is \((indexPath?[1])!)")
             destViewController.transData = myMerchant
             destViewController.amountSGD = sendAmount
+        }
+        
+
+        if segue.identifier == "onGoing" {
+            let navigationViewController : NavigationMapViewController = segue.destination as! NavigationMapViewController
+            
+            navigationViewController.transRefID = transactionID
+            
         }
         
     }
@@ -365,5 +447,6 @@ class CoreMapViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         
         
     }
+
 
 }

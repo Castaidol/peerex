@@ -34,6 +34,7 @@ class MyTransactionTableViewController: UITableViewController{
             
             let value = snapshot.value as? NSDictionary
             
+            if value != nil{
             for trans in value! {
                 
                 
@@ -48,15 +49,18 @@ class MyTransactionTableViewController: UITableViewController{
                     let address = data?["merchantAddress"] as? String ?? ""
                     let name = data?["merchantName"] as? String ?? ""
                     let requestedMoney = data?["requestedMoney"] as? Double
+                    let feeMOney = data?["fees"] as? Double
+                    let totalMoney = data?["totalCharged"] as? Double
+                    
                 
                     
-                    self.transactions.append(Transaction(transactionID: transactionID, value: String(describing: requestedMoney!), date: date, time: time, fee: "ecewew", address: address, merchName: name, status: status, totalCost: "efewgrg"))
+                    self.transactions.append(Transaction(transactionID: transactionID, value: String(describing: requestedMoney!), date: date, time: time, fee: String(describing: feeMOney!), address: address, merchName: name, status: status, totalCost: String(describing: totalMoney!)))
                     
                     
                     self.tableView.reloadData()
                 })
                 
-            }
+                }}
             
         })
 

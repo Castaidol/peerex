@@ -21,7 +21,7 @@ class WalkThroughViewController: UIViewController, UICollectionViewDataSource, U
     
     let walkThroughImageArray = ["icon-line-creditcard", "icon-line-cash", "icon-line-pinmap", "icon-line-trustedmerchants"]
     
-    let walKThroughTextArray = ["Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you", "Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you", "Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you", "Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you"]
+    let walKThroughTextArray = ["Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you", "Specify the cash amount you need", "Select one of our authorized merchants near you", "Pick up cash from the merchant’s location. The merchant will be paid automatically via your credit card"]
     
     
     override func viewDidLoad() {
