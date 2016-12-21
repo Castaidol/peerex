@@ -13,6 +13,7 @@ class WalkThroughCollectionViewCell: UICollectionViewCell {
  
     @IBOutlet weak var walkThroughImage: UIImageView!
     @IBOutlet weak var WalKThroughLabel: UILabel!
+    @IBOutlet weak var WalKThroughTitleLabel: UILabel!
     
     
 }

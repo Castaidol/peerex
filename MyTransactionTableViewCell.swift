@@ -18,6 +18,8 @@ class MyTransactionTableViewCell: UITableViewCell {
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var fee: UILabel!
     @IBOutlet weak var transactionID: UILabel!
+    @IBOutlet weak var backView:UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -31,15 +33,19 @@ class MyTransactionTableViewCell: UITableViewCell {
     
     func configureCell (transaction: Transaction){
         
-        self.sgdValue.text = transaction.value
+        
+        self.sgdValue.text = "$\(transaction.totalCost)"
         self.status.text = transaction.status
         self.date.text = transaction.date
         self.time.text = transaction.time
         self.merchName.text = transaction.merchName
         self.address.text = transaction.address
-        self.fee.text = transaction.fee
         self.transactionID.text = transaction.transactionID
         
+        if self.status.text == "pending"{
+            
+            backView.backgroundColor = UIColor.init(red: 2/255, green: 150/255, blue: 229/255, alpha: 1)
+        }
     }
 
 }

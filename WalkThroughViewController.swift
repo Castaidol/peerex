@@ -23,6 +23,7 @@ class WalkThroughViewController: UIViewController, UICollectionViewDataSource, U
     
     let walKThroughTextArray = ["Buy local Currency from a nearby Peerex merchant with your credit card. It's like having a network of human-powered ATMs around you", "Specify the cash amount you need", "Select one of our authorized merchants near you", "Pick up cash from the merchant’s location. The merchant will be paid automatically via your credit card"]
     
+    let walkThroughTitleArray = ["What is Peerex?", "How it works?", "How it works?", "How it works?"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +72,9 @@ class WalkThroughViewController: UIViewController, UICollectionViewDataSource, U
         
         let text = walKThroughTextArray[idx]
         cell.WalKThroughLabel.text = text
+        
+        let title = walkThroughTitleArray[idx]
+        cell.WalKThroughTitleLabel.text = title
         
         return cell
         

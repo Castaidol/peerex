@@ -112,19 +112,25 @@ class EditAccountViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBAction func setPhoto (sender: AnyObject){
         
-        /*let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeImage as String]
-        
-        imagePicker.delegate = self
-        presentedViewController(imagePicker, animated: true, completion: nil)
-        */
         
     }
     
     @IBAction func goBack(){
         
             }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        self.view.endEditing(true)
+        
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        
+        return true
+        
+    }
         
         
 

@@ -31,7 +31,9 @@ class PopUpViewController: UIViewController{
     var total: Double!
     var transRefID:String!
     
+    //var paymentContext: STPPaymentContext?
     
+    //let stripePublishableKey = "pk_test_SCmjTpTsIyclK12cSKCjtaUt"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,10 +66,39 @@ class PopUpViewController: UIViewController{
        
     }
     
-    
-
-    
     @IBAction func requestMoneyBtn(_ sender: Any) {
+        
+        transactionWithServer()
+        /*
+        let config = STPPaymentConfiguration.shared()
+        config.publishableKey = self.stripePublishableKey
+        //config.appleMerchantIdentifier = self.appleMerchantID
+        config.companyName = "Peerex"
+        config.requiredBillingAddressFields = .none
+        config.requiredShippingAddressFields = .email
+        config.shippingType = .shipping
+        config.additionalPaymentMethods = .all
+        config.smsAutofillDisabled = false
+        
+        //paymentContext = STPPaymentContext(apiAdapter: MyAPIClient.sharedClient, configuration: config, theme: STPTheme.default())
+        
+        paymentContext!.paymentCurrency = "SGD"
+        paymentContext!.paymentAmount = 3000
+        paymentContext!.prefilledInformation = STPUserInformation()
+        
+        //paymentContext!.delegate = self
+        
+        //paymentContext!.requestPayment()
+        
+    
+        let settings = Settings(theme: STPTheme.default(), additionalPaymentMethods: STPPaymentMethodType.all, requiredBillingAddressFields: STPBillingAddressFields.none, requiredShippingAddressFields: PKAddressField.email, shippingType: STPShippingType.delivery, smsAutofillEnabled: false)
+        
+        let paymentVC = PaymentViewController(product: "Cash", price: 30, settings: settings)
+        self.navigationController?.pushViewController(paymentVC, animated: true)
+ */
+    }
+    
+    func transactionWithServer() {
         
         
         self.ref = FIRDatabase.database().reference()
@@ -101,7 +132,8 @@ class PopUpViewController: UIViewController{
                     self.transRefID = transactionRef
                     self.performSegue(withIdentifier: "goToDirection", sender: nil)
                     
-                    
+                    let dataFormatter = NumberFormatter()
+                    dataFormatter.minimumIntegerDigits = 2
                     
                     let date = NSDate()
                     let calendar = NSCalendar.current
@@ -110,15 +142,19 @@ class PopUpViewController: UIViewController{
                     let year = calendar.component(.year , from: date as Date)
                     let hour = calendar.component(.hour, from: date as Date)
                     let minutes = calendar.component(.minute, from: date as Date)
-                    let time = "\(hour):\(minutes)"
-                    let dmy = "\(day)-\(month)-\(year)"
+                    let time = "\(dataFormatter.string(from: hour as NSNumber)!):\(dataFormatter.string(from: minutes as NSNumber)!)"
+                    let dmy = "\(dataFormatter.string(from: day as NSNumber)!)-\(dataFormatter.string(from: month as NSNumber)!)-\(dataFormatter.string(from: year as NSNumber)!)"
                     
                     var image = ""
                     if let i = self.transData.image?.absoluteString {
                         image = i
                     }
                     
-                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status, "requestedMoney" : self.amountSGD, "fees" : self.fees, "totalCharged" : self.total, "merchantName" : self.transData.name, "merchantAddress" : self.transData.address, "merchLAt" : self.transData.location.latitude, "merchLong" : self.transData.location.longitude, "merchImage" : image, "rating" : self.transData.rating, "merchPhone" : self.transData.merchPhone])
+                    let formatter = NumberFormatter()
+                    formatter.minimumFractionDigits = 2
+                    formatter.maximumFractionDigits = 2
+                    
+                    self.ref.child("Traveler").child(self.userId).child("Transactions").child(transactionRef).setValue(["transactionID" : transactionRef, "date" : dmy, "time" : time, "status" : status, "requestedMoney" : self.amountSGD, "fees" : self.fees, "totalCharged" : self.total, "merchantName" : self.transData.name, "merchantAddress" : self.transData.address, "merchLAt" : self.transData.location.latitude, "merchLong" : self.transData.location.longitude, "merchImage" : image, "rating" : self.transData.rating, "merchPhone" : self.transData.merchPhone, "ratingSent" : false, "merchantID" : self.transData.merchID, "ratingGive" : 1])
                     
                 
                 }
@@ -175,7 +211,40 @@ class PopUpViewController: UIViewController{
             
             destViewController.transData = self.transData
             destViewController.transRefID = self.transRefID
+            destViewController.amountSGD = self.amountSGD
         }
         
     }
+    
+    
+    
+    
+    
+    
+    /*
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
+        
+        print("Payment result was created")
+        
+        MyAPIClient.sharedClient.completeCharge(paymentResult, amount: self.paymentContext!.paymentAmount, completion: completion)
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
+        
+        print("Payment did finish")
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
+        
+        print("Payment error")
+    }
+    
+    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
+        
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didUpdateShippingAddress address: STPAddress, completion: @escaping STPShippingMethodsCompletionBlock) {
+        
+    }*/
+    
 }

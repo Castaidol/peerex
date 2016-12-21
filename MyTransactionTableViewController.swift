@@ -25,7 +25,8 @@ class MyTransactionTableViewController: UITableViewController{
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.backgroundColor = UIColor.init(red: 0/255, green: 150/255, blue: 109/255, alpha: 1)
         
         
         ref = FIRDatabase.database().reference()
@@ -48,13 +49,13 @@ class MyTransactionTableViewController: UITableViewController{
                     let time = data?["time"] as? String ?? ""
                     let address = data?["merchantAddress"] as? String ?? ""
                     let name = data?["merchantName"] as? String ?? ""
-                    let requestedMoney = data?["requestedMoney"] as? Double
+                    let requestedMoney = data?["requestedMoney"] as? String ?? ""
                     let feeMOney = data?["fees"] as? Double
                     let totalMoney = data?["totalCharged"] as? Double
                     
                 
                     
-                    self.transactions.append(Transaction(transactionID: transactionID, value: String(describing: requestedMoney!), date: date, time: time, fee: String(describing: feeMOney!), address: address, merchName: name, status: status, totalCost: String(describing: totalMoney!)))
+                    self.transactions.append(Transaction(transactionID: transactionID, value: requestedMoney, date: date, time: time, fee: String(describing: feeMOney!), address: address, merchName: name, status: status, totalCost: String(describing: totalMoney!)))
                     
                     
                     self.tableView.reloadData()
