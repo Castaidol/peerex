@@ -63,13 +63,17 @@ class CurrentTransactionDetailsViewController: UIViewController {
             let fee = value?["fees"] as? Double
             let total = value?["totalCharged"] as? Double
             let merchImage = value?["merchImage"] as? String ?? ""
-            let rating = value?["rating"] as? Int
+            let rating = value?["rating"] as? Double
             
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 2
             formatter.maximumFractionDigits = 2
             
-            self.rating.text = "\(rating!)"
+            let formatterRating = NumberFormatter()
+            formatterRating.minimumFractionDigits = 1
+            formatterRating.maximumFractionDigits = 1
+            
+            self.rating.text = "\(formatterRating.string(from: rating! as NSNumber)!)"
             self.merchName.text = merchName
             self.merchAddress.text = merchAddress
             self.transactionID.text = self.transRefID

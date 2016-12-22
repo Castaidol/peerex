@@ -195,6 +195,7 @@ class MyTransactionsDetailsViewController: UIViewController, StarRatingViewDeleg
         starRatingView.isHidden = true
         ratedView.isHidden = false
         
+        
         self.ref.child("Traveler/\(userId)/Transactions/\(transactionID as String)/ratingSent").setValue(true)
         
         
@@ -209,12 +210,17 @@ class MyTransactionsDetailsViewController: UIViewController, StarRatingViewDeleg
             let value = snapshot.value as? NSDictionary
             
             let merchId = value?["merchantID"] as? String ?? ""
+         
+            let rarating = Float(self.starRate)
             
+            print(rarating)
         
         var parameters: [String: AnyObject] = [:]
-        parameters["rating"] = "\(self.starRate)" as AnyObject?
-        parameters["transref"] = "\(self.transactionID)" as AnyObject?
+        parameters["rating"] = rarating as AnyObject
+        parameters["transref"] = "\(self.transactionID!)" as AnyObject?
         parameters["merchant_id"] = "\(merchId)" as AnyObject?
+            
+            print(parameters)
         
         Alamofire.request("https://boiling-castle-76624.herokuapp.com/ratingapi", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { (response) in
             
@@ -222,13 +228,18 @@ class MyTransactionsDetailsViewController: UIViewController, StarRatingViewDeleg
                 
                 let json = response.result.value as? [String: Any]
                 
-                let rating = json?["rating"] as! Int
+                let rating = json?["rating"] as! Float
                 
-                self.ref.child("Traveler/\(self.userId)/Transactions/\(self.transactionID as String)/rating").setValue(rating)
+                print(rating)
+                self.showStar()
+                
+                self.ref.child("Traveler/\(self.userId)/Transactions/\(self.transactionID as String)/rating").setValue(self.starRate)
  
+                }
             }
-        }
-    })
+        })
+        
+        
     }
 
     

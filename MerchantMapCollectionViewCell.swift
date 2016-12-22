@@ -32,8 +32,12 @@ class MerchantMapCollectionViewCell: UICollectionViewCell {
     
     func configureCell(merchant: Merchant) {
         
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 1
+        
         self.merchNameLabel.text = merchant.name
-        self.merchRatingLabel.text = "\(merchant.rating)"
+        self.merchRatingLabel.text = "\(formatter.string(from: merchant.rating as NSNumber)!)"
         self.selectView.backgroundColor = UIColor.white
         if merchant.image != nil {
             self.merchImage.af_setImage(withURL: merchant.image!)

@@ -64,8 +64,12 @@ class DetailTransactionViewController: UIViewController{
         feeLabel.text = "$\(formatter.string(from: fees as NSNumber)!)"
         totalCostLabel.text = "$\(formatter.string(from: total as NSNumber)!)"
         
+        let formatterRating = NumberFormatter()
+        formatterRating.minimumFractionDigits = 1
+        formatterRating.maximumFractionDigits = 1
+        
         merchNameLabel.text = transData.name
-        merchRating.text = "\(transData.rating)"
+        merchRating.text = "\(formatterRating.string(from: transData.rating as NSNumber)!)"
         merchLocationLabel.text = transData.address
         
         

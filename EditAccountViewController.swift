@@ -106,7 +106,9 @@ class EditAccountViewController: UIViewController, UIImagePickerControllerDelega
         let travelerLastName: String = self.lastNameText.text!
         let travelerPhoneNumber: String = self.phoneNumber.text!
         
-        self.ref.child("Traveler").child(userId).setValue(["firstName" : travelerFirstName, "lastName" : travelerLastName, "phoneNumber" : travelerPhoneNumber])
+        self.ref.child("Traveler").child(userId).child("firstName").setValue(travelerFirstName)
+        self.ref.child("Traveler").child(userId).child("lastName").setValue(travelerLastName)
+        self.ref.child("Traveler").child(userId).child("phoneNumber").setValue(travelerPhoneNumber)
         
     }
     
