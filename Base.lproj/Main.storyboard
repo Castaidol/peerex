@@ -2308,4 +2308,5 @@ you are requesting for</string>
         <segue reference="7Hc-SL-jar"/>
         <segue reference="K9Z-pi-wF3"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.12941176470588234" green="0.74509803921568629" blue="0.50980392156862742" alpha="1" colorSpace="calibratedRGB"/>
 </document>

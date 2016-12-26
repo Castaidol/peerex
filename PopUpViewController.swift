@@ -115,10 +115,12 @@ class PopUpViewController: UIViewController{
             var parameters: [String: AnyObject] = [:]
             parameters["firstname"] = "\(firstName)" as AnyObject?
             parameters["lastname"] = "\(lastName)" as AnyObject?
-            parameters["email"] = "\(email)" as AnyObject
+            parameters["email"] = "\(email!)" as AnyObject
             parameters["number"] = Int(phoneNumber) as AnyObject
             parameters["merchant_id"] = "\(self.transData.merchID)" as AnyObject
             parameters["amount"] = self.amountSGD as AnyObject
+            parameters["photo"] = "http://i.imgur.com/3CNbFvG.jpg" as AnyObject
+            
                     
             Alamofire.request("https://boiling-castle-76624.herokuapp.com/transactionapi", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { (response) in
             
